@@ -705,6 +705,7 @@ EmptyTower:Toggle({
         game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower[_G.Slot_Tower].Value = "EmptyTower"
         elseif _G.YTP == false then
         game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower[_G.Slot_Tower].Value = getgenv().SaveOld[_G.Slot_Tower]
+        end
     end
 })
 
