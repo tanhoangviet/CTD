@@ -715,7 +715,7 @@ Empty:Dropdown({
     end
 })
 
-EmptyTower:Toggle({
+Empty:Toggle({
     Title = "Click To Replace Tower",
     Desc = "chossen Tower First",
     Type = "Toggle",
