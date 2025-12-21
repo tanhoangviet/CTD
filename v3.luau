@@ -696,62 +696,49 @@ Empty:Paragraph({
     Color = "Red",
 })
 
-_G.Slot_Tower = 1
+_G.Slot_Tower = "1"
 
-getgenv().SaveOld = {
-	["1"] = game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower1.Value,
-	["2"] = game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower2.Value,
-	["3"] = game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower3.Value,
-	["4"] = game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower4.Value,
-	["5"] = game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower5.Value,
-	["6"] = game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower6.Value,
-}
+getgenv().SaveOld = {}
 
-local Selected_VT = Empty:Dropdown({
+for i = 1,6 do
+    local t = game:GetService("Players").LocalPlayer.PlayerData.Loadout:FindFirstChild("Tower"..i)
+    if t then
+        getgenv().SaveOld[tostring(i)] = t.Value
+    end
+end
+
+Empty:Dropdown({
     Title = "Select Tower Slot To Replace With EmptyTower",
-    Values = { "1", "2", "3","4","5","6" },
+    Values = {"1","2","3","4","5","6"},
     Value = "1",
-    Callback = function(Value) 
-        _G.Slot_Tower = Value
+    Callback = function(v)
+        _G.Slot_Tower = v
     end
 })
 
 EmptyTower:Toggle({
     Title = "Click To Replace Tower",
     Value = false,
-    Callback = function(Value) 
-        _G.YTP = Value
-        if _G.YTP == true then
-        game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower[_G.Slot_Tower].Value = "EmptyTower"
-        elseif _G.YTP == false then
-        game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower[_G.Slot_Tower].Value = getgenv().SaveOld[_G.Slot_Tower]
-        end
-    end
-})
-
-EmptyTower:Toggle({
-    Title = "Click To Replace Tower",
-    Value = false,
-    Callback = function(Value)
-        _G.YTP = Value
+    Callback = function(v)
+        _G.YTP = v
 
         if not _G.Slot_Tower then return end
-        if not game:GetService("Players").LocalPlayer:FindFirstChild("PlayerData") then return end
-        if not game:GetService("Players").LocalPlayer.PlayerData:FindFirstChild("Loadout") then return end
-        if not game:GetService("Players").LocalPlayer.PlayerData.Loadout:FindFirstChild("Tower") then return end
-        if not game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower:FindFirstChild(_G.Slot_Tower) then return end
 
-        if _G.YTP == true then
-            if not getgenv().SaveOld then getgenv().SaveOld = {} end
+        local lp = game:GetService("Players").LocalPlayer
+        local loadout = lp:FindFirstChild("PlayerData") and lp.PlayerData:FindFirstChild("Loadout")
+        if not loadout then return end
+
+        local towerObj = loadout:FindFirstChild("Tower".._G.Slot_Tower)
+        if not towerObj then return end
+
+        if _G.YTP then
             if not getgenv().SaveOld[_G.Slot_Tower] then
-                getgenv().SaveOld[_G.Slot_Tower] =
-                    game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower[_G.Slot_Tower].Value
+                getgenv().SaveOld[_G.Slot_Tower] = towerObj.Value
             end
-            game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower[_G.Slot_Tower].Value = "EmptyTower"
+            towerObj.Value = "EmptyTower"
         else
-            if getgenv().SaveOld and getgenv().SaveOld[_G.Slot_Tower] then
-                game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower[_G.Slot_Tower].Value =
-                    getgenv().SaveOld[_G.Slot_Tower]
+            if getgenv().SaveOld[_G.Slot_Tower] then
+                towerObj.Value = getgenv().SaveOld[_G.Slot_Tower]
             end
         end
     end
