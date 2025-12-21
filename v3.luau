@@ -668,7 +668,6 @@ local Empty = tower:Section({
 Empty:Paragraph({
     Title = "Tutorial",
     Desc = "1. Click Tower Have Ability Spawn Unit Like Technomancer \n 2. Click Ability Then Click EmptyTower \n Now Ur Done Place Anywhere",
-    Color = ,
 })
 
 Empty:Paragraph({
