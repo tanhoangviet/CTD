@@ -1,0 +1,796 @@
+--> Loader <--
+local LoaderScript = {
+	["WindUI"] = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))(),
+	["ANUI"] = loadstring(game:HttpGet("https://raw.githubusercontent.com/ANHub-Script/ANUI/refs/heads/main/dist/main.lua?v="..math.random()))()
+}
+
+--> Settings Library <--
+
+local WindUI = LoaderScript["WindUI"]
+WindUI:SetParent(game:GetService("CoreGui"))
+
+--> Theme <--
+WindUI:AddTheme({Name="Mid Summer",Accent=WindUI:Gradient({["0"]={Color=Color3.fromHex("#FFD194"),Transparency=0},["50"]={Color=Color3.fromHex("#FF7E5F"),Transparency=0},["100"]={Color=Color3.fromHex("#FF5F6D"),Transparency=0}},{Rotation=45}),Dialog=WindUI:Gradient({["0"]={Color=Color3.fromHex("#FFF3E0"),Transparency=0},["50"]={Color=Color3.fromHex("#FFE0B2"),Transparency=0},["100"]={Color=Color3.fromHex("#FFD194"),Transparency=0}},{Rotation=45}),Outline=WindUI:Gradient({["0"]={Color=Color3.fromHex("#FF8C42"),Transparency=0},["50"]={Color=Color3.fromHex("#FF7E5F"),Transparency=0},["100"]={Color=Color3.fromHex("#FF6A88"),Transparency=0}},{Rotation=45}),Text=WindUI:Gradient({["0"]={Color=Color3.fromHex("#6B4226"),Transparency=0},["50"]={Color=Color3.fromHex("#8B4513"),Transparency=0},["100"]={Color=Color3.fromHex("#A0522D"),Transparency=0}},{Rotation=45}),Placeholder=WindUI:Gradient({["0"]={Color=Color3.fromHex("#D9B08C"),Transparency=0},["50"]={Color=Color3.fromHex("#C68642"),Transparency=0},["100"]={Color=Color3.fromHex("#B5651D"),Transparency=0}},{Rotation=45}),Background=WindUI:Gradient({["0"]={Color=Color3.fromHex("#FFE5B4"),Transparency=0},["50"]={Color=Color3.fromHex("#FFC87C"),Transparency=0},["100"]={Color=Color3.fromHex("#FFAA5C"),Transparency=0}},{Rotation=45}),Button=WindUI:Gradient({["0"]={Color=Color3.fromHex("#FFAA5C"),Transparency=0},["50"]={Color=Color3.fromHex("#FF7E5F"),Transparency=0},["100"]={Color=Color3.fromHex("#FF5F6D"),Transparency=0}},{Rotation=45}),Icon=WindUI:Gradient({["0"]={Color=Color3.fromHex("#FF7F50"),Transparency=0},["50"]={Color=Color3.fromHex("#FF6A88"),Transparency=0},["100"]={Color=Color3.fromHex("#FF5F6D"),Transparency=0}},{Rotation=45})})
+
+WindUI:AddTheme({Name="Lunar Moon",Accent=WindUI:Gradient({["0"]={Color=Color3.fromHex("#232526"),Transparency=0},["50"]={Color=Color3.fromHex("#636363"),Transparency=0},["100"]={Color=Color3.fromHex("#E0E0E0"),Transparency=0}},{Rotation=90}),Dialog=WindUI:Gradient({["0"]={Color=Color3.fromHex("#1C1C1C"),Transparency=0},["50"]={Color=Color3.fromHex("#3A3A3A"),Transparency=0},["100"]={Color=Color3.fromHex("#636363"),Transparency=0}},{Rotation=90}),Outline=WindUI:Gradient({["0"]={Color=Color3.fromHex("#B0B0B0"),Transparency=0},["50"]={Color=Color3.fromHex("#C0C0C0"),Transparency=0},["100"]={Color=Color3.fromHex("#E0E0E0"),Transparency=0}},{Rotation=90}),Text=WindUI:Gradient({["0"]={Color=Color3.fromHex("#FFFFFF"),Transparency=0},["50"]={Color=Color3.fromHex("#D9D9D9"),Transparency=0},["100"]={Color=Color3.fromHex("#BFBFBF"),Transparency=0}},{Rotation=90}),Placeholder=WindUI:Gradient({["0"]={Color=Color3.fromHex("#A0A0A0"),Transparency=0},["50"]={Color=Color3.fromHex("#B0B0B0"),Transparency=0},["100"]={Color=Color3.fromHex("#C0C0C0"),Transparency=0}},{Rotation=90}),Background=WindUI:Gradient({["0"]={Color=Color3.fromHex("#101010"),Transparency=0},["50"]={Color=Color3.fromHex("#3A3A3A"),Transparency=0},["100"]={Color=Color3.fromHex("#636363"),Transparency=0}},{Rotation=90}),Button=WindUI:Gradient({["0"]={Color=Color3.fromHex("#3A3A3A"),Transparency=0},["50"]={Color=Color3.fromHex("#636363"),Transparency=0},["100"]={Color=Color3.fromHex("#A2A2A2"),Transparency=0}},{Rotation=90}),Icon=WindUI:Gradient({["0"]={Color=Color3.fromHex("#C0C0C0"),Transparency=0},["50"]={Color=Color3.fromHex("#E0E0E0"),Transparency=0},["100"]={Color=Color3.fromHex("#FFFFFF"),Transparency=0}},{Rotation=90})})
+
+WindUI:AddTheme({Name="Winter Frost",Accent=WindUI:Gradient({["0"]={Color=Color3.fromHex("#D0E8F2"),Transparency=0},["50"]={Color=Color3.fromHex("#A0D4F2"),Transparency=0},["100"]={Color=Color3.fromHex("#70C0F2"),Transparency=0}},{Rotation=45}),Dialog=WindUI:Gradient({["0"]={Color=Color3.fromHex("#E0F7FF"),Transparency=0},["50"]={Color=Color3.fromHex("#B0EFFF"),Transparency=0},["100"]={Color=Color3.fromHex("#80E7FF"),Transparency=0}},{Rotation=45}),Outline=WindUI:Gradient({["0"]={Color=Color3.fromHex("#70C0F2"),Transparency=0},["50"]={Color=Color3.fromHex("#50B0E0"),Transparency=0},["100"]={Color=Color3.fromHex("#30A0D0"),Transparency=0}},{Rotation=45}),Text=WindUI:Gradient({["0"]={Color=Color3.fromHex("#0D3B66"),Transparency=0},["50"]={Color=Color3.fromHex("#145DA0"),Transparency=0},["100"]={Color=Color3.fromHex("#1E81B0"),Transparency=0}},{Rotation=45}),Placeholder=WindUI:Gradient({["0"]={Color=Color3.fromHex("#7FB3D5"),Transparency=0},["50"]={Color=Color3.fromHex("#5FA2C5"),Transparency=0},["100"]={Color=Color3.fromHex("#3F91B5"),Transparency=0}},{Rotation=45}),Background=WindUI:Gradient({["0"]={Color=Color3.fromHex("#E6F0FA"),Transparency=0},["50"]={Color=Color3.fromHex("#CDE0F5"),Transparency=0},["100"]={Color=Color3.fromHex("#B4D1F0"),Transparency=0}},{Rotation=45}),Button=WindUI:Gradient({["0"]={Color=Color3.fromHex("#50B0E0"),Transparency=0},["50"]={Color=Color3.fromHex("#30A0D0"),Transparency=0},["100"]={Color=Color3.fromHex("#108FC0"),Transparency=0}},{Rotation=45}),Icon=WindUI:Gradient({["0"]={Color=Color3.fromHex("#30A0D0"),Transparency=0},["50"]={Color=Color3.fromHex("#108FC0"),Transparency=0},["100"]={Color=Color3.fromHex("#0D81B0"),Transparency=0}},{Rotation=45})})
+
+WindUI:AddTheme({Name="Elegant Night",Accent=WindUI:Gradient({["0"]={Color=Color3.fromHex("#3B0D5C"),Transparency=0},["50"]={Color=Color3.fromHex("#6A1B9A"),Transparency=0},["100"]={Color=Color3.fromHex("#9C27B0"),Transparency=0}},{Rotation=45}),Dialog=WindUI:Gradient({["0"]={Color=Color3.fromHex("#1A001A"),Transparency=0},["50"]={Color=Color3.fromHex("#3D003D"),Transparency=0},["100"]={Color=Color3.fromHex("#6A006A"),Transparency=0}},{Rotation=45}),Outline=WindUI:Gradient({["0"]={Color=Color3.fromHex("#9C27B0"),Transparency=0},["50"]={Color=Color3.fromHex("#7B1FA2"),Transparency=0},["100"]={Color=Color3.fromHex("#6A1B9A"),Transparency=0}},{Rotation=45}),Text=WindUI:Gradient({["0"]={Color=Color3.fromHex("#FFFFFF"),Transparency=0},["50"]={Color=Color3.fromHex("#E0E0E0"),Transparency=0},["100"]={Color=Color3.fromHex("#C0C0C0"),Transparency=0}},{Rotation=45}),Placeholder=WindUI:Gradient({["0"]={Color=Color3.fromHex("#B0A0B5"),Transparency=0},["50"]={Color=Color3.fromHex("#9C8FA0"),Transparency=0},["100"]={Color=Color3.fromHex("#7B6F8C"),Transparency=0}},{Rotation=45}),Background=WindUI:Gradient({["0"]={Color=Color3.fromHex("#10001A"),Transparency=0},["50"]={Color=Color3.fromHex("#1A0033"),Transparency=0},["100"]={Color=Color3.fromHex("#30004D"),Transparency=0}},{Rotation=45}),Button=WindUI:Gradient({["0"]={Color=Color3.fromHex("#6A1B9A"),Transparency=0},["50"]={Color=Color3.fromHex("#9C27B0"),Transparency=0},["100"]={Color=Color3.fromHex("#B55BC5"),Transparency=0}},{Rotation=45}),Icon=WindUI:Gradient({["0"]={Color=Color3.fromHex("#9C27B0"),Transparency=0},["50"]={Color=Color3.fromHex("#B55BC5"),Transparency=0},["100"]={Color=Color3.fromHex("#D084E0"),Transparency=0}},{Rotation=45})})
+
+WindUI:AddTheme({Name="Lunar Abyss",Accent=WindUI:Gradient({["0"]={Color=Color3.fromHex("#0D0D1A"),Transparency=0},["50"]={Color=Color3.fromHex("#1A1A33"),Transparency=0},["100"]={Color=Color3.fromHex("#2E2E5C"),Transparency=0}},{Rotation=90}),Dialog=WindUI:Gradient({["0"]={Color=Color3.fromHex("#101026"),Transparency=0},["50"]={Color=Color3.fromHex("#1A1A3D"),Transparency=0},["100"]={Color=Color3.fromHex("#333366"),Transparency=0}},{Rotation=90}),Outline=WindUI:Gradient({["0"]={Color=Color3.fromHex("#2E2E5C"),Transparency=0},["50"]={Color=Color3.fromHex("#404080"),Transparency=0},["100"]={Color=Color3.fromHex("#5050A0"),Transparency=0}},{Rotation=90}),Text=WindUI:Gradient({["0"]={Color=Color3.fromHex("#A0A0FF"),Transparency=0},["50"]={Color=Color3.fromHex("#C0C0FF"),Transparency=0},["100"]={Color=Color3.fromHex("#E0E0FF"),Transparency=0}},{Rotation=90}),Placeholder=WindUI:Gradient({["0"]={Color=Color3.fromHex("#6060A0"),Transparency=0},["50"]={Color=Color3.fromHex("#8080C0"),Transparency=0},["100"]={Color=Color3.fromHex("#A0A0E0"),Transparency=0}},{Rotation=90}),Background=WindUI:Gradient({["0"]={Color=Color3.fromHex("#0A0A1A"),Transparency=0},["50"]={Color=Color3.fromHex("#1A1A33"),Transparency=0},["100"]={Color=Color3.fromHex("#2E2E5C"),Transparency=0}},{Rotation=90}),Button=WindUI:Gradient({["0"]={Color=Color3.fromHex("#404080"),Transparency=0},["50"]={Color=Color3.fromHex("#5050A0"),Transparency=0},["100"]={Color=Color3.fromHex("#6060C0"),Transparency=0}},{Rotation=90}),Icon=WindUI:Gradient({["0"]={Color=Color3.fromHex("#6060C0"),Transparency=0},["50"]={Color=Color3.fromHex("#8080E0"),Transparency=0},["100"]={Color=Color3.fromHex("#A0A0FF"),Transparency=0}},{Rotation=90})})
+
+WindUI:AddTheme({Name="Lunar Eclipse",Accent=WindUI:Gradient({["0"]={Color=Color3.fromHex("#33001A"),Transparency=0},["50"]={Color=Color3.fromHex("#660033"),Transparency=0},["100"]={Color=Color3.fromHex("#99004D"),Transparency=0}},{Rotation=45}),Dialog=WindUI:Gradient({["0"]={Color=Color3.fromHex("#1A0014"),Transparency=0},["50"]={Color=Color3.fromHex("#330028"),Transparency=0},["100"]={Color=Color3.fromHex("#66003F"),Transparency=0}},{Rotation=45}),Outline=WindUI:Gradient({["0"]={Color=Color3.fromHex("#99004D"),Transparency=0},["50"]={Color=Color3.fromHex("#CC3366"),Transparency=0},["100"]={Color=Color3.fromHex("#FF6699"),Transparency=0}},{Rotation=45}),Text=WindUI:Gradient({["0"]={Color=Color3.fromHex("#FFE6F0"),Transparency=0},["50"]={Color=Color3.fromHex("#FFB3CC"),Transparency=0},["100"]={Color=Color3.fromHex("#FF80A0"),Transparency=0}},{Rotation=45}),Placeholder=WindUI:Gradient({["0"]={Color=Color3.fromHex("#CC6699"),Transparency=0},["50"]={Color=Color3.fromHex("#FF99CC"),Transparency=0},["100"]={Color=Color3.fromHex("#FFB3D9"),Transparency=0}},{Rotation=45}),Background=WindUI:Gradient({["0"]={Color=Color3.fromHex("#1A0014"),Transparency=0},["50"]={Color=Color3.fromHex("#330028"),Transparency=0},["100"]={Color=Color3.fromHex("#66003F"),Transparency=0}},{Rotation=45}),Button=WindUI:Gradient({["0"]={Color=Color3.fromHex("#66003F"),Transparency=0},["50"]={Color=Color3.fromHex("#99004D"),Transparency=0},["100"]={Color=Color3.fromHex("#CC3366"),Transparency=0}},{Rotation=45}),Icon=WindUI:Gradient({["0"]={Color=Color3.fromHex("#99004D"),Transparency=0},["50"]={Color=Color3.fromHex("#CC3366"),Transparency=0},["100"]={Color=Color3.fromHex("#FF6699"),Transparency=0}},{Rotation=45})})
+
+
+--> Notification <--
+
+function notify(no)
+local type = no.Type or "WindUI"
+local name = no.Title or "Template"
+local desc = no.Desc or "Template"
+local icon = "rbxassetid://" ..no.Icon or "rbxassetid://0"
+local Duration = no.Duration or 3
+
+if type == "Roblox" then
+game:GetService("StarterGui"):SetCore("SendNotification",{Title = name,Text = desc,Icon = icon})
+end
+if type == "WindUI" then
+WindUI:Notify({Title = name,Content = desc,Duration = Duration,Icon = icon})
+end
+end
+
+
+--> Function Download Image <--
+function LoadAssets(list, cfg)
+    ContentProvider = game:GetService("ContentProvider")
+    HttpService = game:GetService("HttpService")
+
+    Request = WindUI.Creator.Request
+
+    cfg = cfg or {}
+
+    Root = cfg.root or "Hub"
+    AssetsDir = cfg.assets or (Root .. "/Assets")
+    Prefix = cfg.prefix or ""
+    Suffix = cfg.suffix or ""
+    ForceExt = cfg.forceExt
+    RetryDelay = cfg.retryDelay or 0.12
+    PreloadBatch = cfg.preloadBatch or 8
+    MaxRetry = cfg.maxRetry or math.huge
+    UseCache = cfg.cache ~= false
+    UserAgent = cfg.userAgent or "KoyukiHub"
+    AutoNoMedia = cfg.nomedia ~= false
+
+    if not isfolder(Root) then makefolder(Root) end
+    if not isfolder(AssetsDir) then makefolder(AssetsDir) end
+    if AutoNoMedia and not isfile(AssetsDir.."/.nomedia") then
+        writefile(AssetsDir.."/.nomedia","")
+    end
+
+    function GetExt(url)
+        if ForceExt then return ForceExt end
+        e = url:match("^.+(%.[%w%d]+)$")
+        return (e and #e <= 6) and e or ".png"
+    end
+
+    function Hash(str)
+        return HttpService:GenerateGUID(false):gsub("-",""):sub(1,16)
+    end
+
+    function RequestBody(url)
+        ok,res = pcall(function()
+            return Request({
+                Url = url,
+                Method = "GET",
+                Headers = {
+                    ["User-Agent"] = UserAgent
+                }
+            })
+        end)
+        return (ok and res and res.Body and #res.Body > 10) and res.Body or nil
+    end
+
+    Result = {}
+    PreloadQueue = {}
+
+    for key,url in pairs(list) do
+        Name = Prefix .. Hash(url) .. Suffix .. GetExt(url)
+        Path = AssetsDir .. "/" .. Name
+
+        if not (UseCache and isfile(Path) and #readfile(Path) > 10) then
+            Retry = 0
+            repeat
+                Body = RequestBody(url)
+                if Body then
+                    writefile(Path,Body)
+                else
+                    Retry += 1
+                    task.wait(RetryDelay)
+                end
+            until (Body and isfile(Path)) or Retry >= MaxRetry
+        end
+
+        if isfile(Path) then
+            Asset = getcustomasset(Path)
+            Result[key] = Asset
+            table.insert(PreloadQueue,Asset)
+
+            if #PreloadQueue >= PreloadBatch then
+                ContentProvider:PreloadAsync(PreloadQueue)
+                table.clear(PreloadQueue)
+                task.wait()
+            end
+        else
+            Result[key] = nil
+        end
+    end
+
+    if #PreloadQueue > 0 then
+        ContentProvider:PreloadAsync(PreloadQueue)
+    end
+
+    return Result
+end
+--> Asset Download <--
+local Assets = LoadAssets({
+    Background = "https://w0.peakpx.com/wallpaper/798/931/HD-wallpaper-how-does-recruitment-work-in-blue-archive-pro-game-guides.jpg",
+    Thumbnail_1 = "https://images.hdqwalls.com/wallpapers/arona-and-plana-blue-archive-19.jpg",
+    Icon_Image = "https://i.ibb.co/99sFfyn9/download-11.png",
+    User_Inco = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrodGnAjQt1cOYWVF5_68ybs_1iCTOPVch880cgzghmbr5ntgE4UDQdstX&s=10",
+    Prog_Icon = "https://static.wikia.nocookie.net/critical-tower-defense/images/4/46/SystemOverdriveAbilityIcon.png/revision/latest?cb=20220321021234",
+    Artisan_Icon = "https://static.wikia.nocookie.net/critical-tower-defense/images/4/46/Artisan.png/revision/latest?cb=20251126114219",
+    Phantom_Icon = "https://static.wikia.nocookie.net/critical-tower-defense/images/8/8c/Phantum.png/revision/latest?cb=20250516124526",
+    DumpsterFire_Icon = "https://static.wikia.nocookie.net/critical-tower-defense/images/8/8d/Dumpster.webp/revision/latest?cb=20250517200926",
+}, {
+    root = "KoyukiHub",
+    assets = "KoyukiHub/Assets",
+    prefix = "K_",
+    suffix = "_A",
+    forceExt = ".png"
+})
+
+local Map = LoadAssets({
+    B_O_D = "https://static.wikia.nocookie.net/critical-tower-defense/images/b/b3/TheBlackOrdealSquare.png/revision/latest?cb=20220708205616",
+    F_R = "https://static.wikia.nocookie.net/critical-tower-defense/images/6/61/FracturedReality.png/revision/latest?cb=20251122105416",
+    G_B = "https://static.vecteezy.com/system/resources/previews/055/660/360/non_2x/a-golden-burger-deliciously-rendered-in-gold-png.png",
+    T_A_O = "https://static.wikia.nocookie.net/critical-tower-defense/images/9/90/TollAndOrder.png/revision/latest?cb=20240821060313",
+    D = "https://static.wikia.nocookie.net/critical-tower-defense/images/3/38/Duck.png/revision/latest?cb=20250516183108",
+    S_L = "https://static.wikia.nocookie.net/roblox/images/0/05/Spawn_Decal.png/revision/latest?cb=20240608072018",
+}, {
+    root = "KoyukiHub",
+    assets = "KoyukiHub/Assets",
+    prefix = "K_",
+    suffix = "_A",
+    forceExt = ".png"
+})
+
+--> Window <--
+function GetGame()
+    if game.PlaceId == 5543622168 then
+        return "Lobby"
+    elseif game.PlaceId == 6498579243 then
+    return "InGame"
+    end
+end
+
+
+_G.Window = WindUI:CreateWindow({
+    Title = "Koyuki Hub | CTD | " ..GetGame(),
+    Icon = "rbxassetid://134430677550422",
+    Author = "By Nova Hoang / playGiang",
+    Folder = "KoyukiHub",
+    HideSearchBar = false,
+    Transparent = true,
+    Theme = "Dark",
+    Resizable = true,
+    SideBarWidth = 200,
+    BackgroundImageTransparency = 0.42,
+    HideSearchBar = true,
+    ScrollBarEnabled = false,
+    Background = Assets.Background,
+    Acrylic = true,
+    NewElements = true,
+    KeySystem = { 
+        Key = { "Niha", "koyuki"},
+        Note = "Key Form Clipboard Click Getkey",
+        Thumbnail = {
+            Image = Assets.Thumbnail_1,
+            Title = "Koyuki",
+        },
+        URL = "koyuki",
+        SaveKey = true,
+    },
+    Topbar = {
+        Height = 44,
+        ButtonsType = "Mac",
+    },
+})
+
+Window:EditOpenButton({
+    Title = "Open Koyuki Hub",
+    Icon = "rbxassetid://134430677550422",
+    CornerRadius = UDim.new(0,5),
+    StrokeThickness = 7,
+    Color = ColorSequence.new(
+        Color3.fromHex("FF00F0"), 
+        Color3.fromHex("#FF00BD")
+    ),
+    OnlyMobile = false,
+    Enabled = true,
+    Draggable = true,
+})
+
+-->> Tag And Profile <<--
+--> Function Get Profile <--
+local HttpService = game:GetService("HttpService")
+
+-->> Animation Window <<--
+
+--> Functional <--
+--| Bypass Anticheat
+if game.PlaceId == 5543622168 then
+local object_type = {
+	["G_Burger"] = workspace:WaitForChild("Map"):WaitForChild("EndRoom"):WaitForChild("YOUNEEDGOLDENBURGER"),
+	["T_A_Order"] = workspace:WaitForChild("Map"):WaitForChild("TollAndOrderFloaty"):WaitForChild("AntiExploitToll"),
+}
+
+task.spawn(function()
+	for i, v in pairs(object_type) do
+		if v and v.Parent then
+			pcall(function() v:Destroy() end)
+		end
+	end
+	if notify then
+		pcall(function() notify({Name="Bypass Anticheat", Desc="Success", Icon="check"}) end)
+	end
+end)
+end
+
+--> Tabs <--
+
+local Tabs = {
+ ["Main"] = _G.Window:Section({Title = "Main",Opened = false, Icon = "solar:home-2-broken", IconColor = Green, IconShape = "Square",Locked = false})
+}
+
+--> Getgenv config <--
+getgenv().Config = {
+	["Place"] = nil,
+	["Color"] = {
+		["PrimaryColor"] = Color3.fromRGB(0,0,0),
+		["SecondaryColor"] = Color3.fromRGB(0,0,0),
+		["WeaponColor"] = Color3.fromRGB(0,0,0) ,
+		},
+	["Programmer Ability Number"] = nil,
+	["TimeProg"] = 30,
+}
+
+--// Lobby \\--
+if game.PlaceId == 5543622168 then
+--> Getgenv Misc or Other <-
+getgenv().Places = {
+	["Black Ordeal"] = workspace.Map["Black Ordeal"].TeleportPos.CFrame,
+	["End Room(Burger Golden)"] = workspace.Map.EndRoom.TPPart.CFrame,
+	["Lobby Level 20"] = workspace.SpecialParts.Lobby2LevelRequirement.CFrame,
+	["Arena Level 30"] = workspace.SpecialParts.Lobby2LevelRequirement30.CFrame,
+	["Ducky"] = workspace.NPCS.Talks.THEDUCK.HumanoidRootPart.CFrame,
+	["Toll And Order"] = workspace.Elevators.ClassicElevators.TollersTollAndOrder.baseplate.CFrame,
+	["Fractured Reality"] = workspace.Map["Fractured Reality"].TPDestination.CFrame,
+	["Spawn Location"] = workspace.SpawnLocation,
+}
+
+--> Section x Section Elements <--
+--> Section Lobby <--
+
+local secsLobby = {
+	["Teleport"] = Tabs["Main"]:Tab({Title = "Teleport", Opened = false, Icon = "solar:map-point-remove-linear", IconColor = Blue, IconShape = "Square",}),
+	["Color Tower"] = Tabs["Main"]:Tab({Title = "Color For Tower",Opened = false, Icon = "solar:paint-roller-bold", IconColor = Red, IconShape = "Square",}),
+	["Misc"] = Tabs["Main"]:Tab({Title = "Misc",Opened = false, Icon = "solar:airbuds-case-minimalistic-outline", IconColor = Yellow, IconShape = "Square",})
+}
+
+
+--/> Teleport Section <\--
+teleport = secsLobby["Teleport"]
+
+teleport:Dropdown({
+    Title = "Select Place To Teleport",
+    Values = {
+        {Title="Black Ordeal",Icon=Map.B_O_D},
+        {Title="End Room(Burger Golden)",Icon=Map.G_B},
+        {Title="Lobby Level 20"},
+        {Title="Arena Level 30"},
+        {Title="Toll And Order",Icon=Map.T_A_O},
+        {Title="Spawn Location",Icon=Map.SL},
+        {Title="Fractured Reality",Icon=Map.F_R},
+        {Title="Ducky",Icon=Map.D},
+    },
+    Value = "",
+    Callback = function(v)
+        getgenv().Config["Place"] = v.Title
+    end
+})
+
+teleport:Button({
+    Title = "Teleport",
+    Justify = "Center",
+    IconAlign = "Left",
+    Icon = "space",
+    Callback = function()
+        local p = getgenv().Config["Place"]
+        if not p then notify({Name="Select Place",Desc="Select Place To Teleport",Icon="check"}); return end
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = getgenv().Places[p]
+    end
+})
+
+--/> Color Section <\--
+Color = secsLobby["Color Tower"]
+Color:Colorpicker({
+    Title = "Primary Color",
+    Default = Color3.fromRGB(0, 255, 0),
+    Transparency = 0,
+    Locked = false,
+    Callback = function(color)
+        getgenv().Config = getgenv().Config or {}
+        getgenv().Config["Color"] = getgenv().Config["Color"] or {}
+        getgenv().Config.Color.PrimaryColor = color
+    end
+})
+
+Color:Colorpicker({
+    Title = "Weapon Color",
+    Default = Color3.fromRGB(0,255,0),
+    Transparency = 0,
+    Locked = false,
+    Callback = function(c)
+        getgenv().Config = getgenv().Config or {}
+        getgenv().Config.Color = getgenv().Config.Color or {}
+        getgenv().Config.Color.WeaponColor = c
+    end
+})
+
+Color:Colorpicker({
+    Title = "Secondary Color",
+    Default = Color3.fromRGB(0, 255, 0),
+    Transparency = 0,
+    Locked = false,
+    Callback = function(color)
+        getgenv().Config = getgenv().Config or {}
+        getgenv().Config["Color"] = getgenv().Config["Color"] or {}
+        getgenv().Config["Color"]["SecondaryColor"] = color
+    end
+})
+
+getgenv().OptionsColor = getgenv().OptionsColor or {}
+local cfg = getgenv().Config["Color"]
+local availableColors = {"PrimaryColor","WeaponColor","SecondaryColor"}
+
+Color:Dropdown({
+    Title = "Color Options",
+    Values = availableColors,
+    Value = {"PrimaryColor"},
+    Multi = true,
+    AllowNone = true,
+    Callback = function(option)
+        getgenv().OptionsColor = option or {}
+    end
+})
+
+Color:Button({
+    Title = "Set Color",
+    Desc = "Set Color For Tower",
+    Locked = false,
+    Callback = function()
+        local payloads = {
+            PrimaryColor = {"Color","PrimaryColor",{Color = cfg["PrimaryColor"]}},
+            WeaponColor = {"Color","WeaponColor",{Color = cfg["WeaponColor"]}},
+            SecondaryColor = {"Color","SecondaryColor",{Color = cfg["SecondaryColor"]}}
+        }
+        for _, opt in ipairs(getgenv().OptionsColor) do
+            local payload = payloads[opt]
+            if payload then
+                pcall(function()
+                    game:GetService("ReplicatedStorage"):WaitForChild("Remotes"):WaitForChild("PlayerData"):FireServer(unpack(payload))
+                end)
+            end
+        end
+    end
+})
+
+--/> <\--
+
+--/> Misc <\--
+misc = secsLobby["Misc"]
+
+misc:Button({
+    Title = "Get Anomaly Tracer",
+    Desc = "Get a Anomaly Tracer",
+    Locked = false,
+    Callback = function()
+
+        local hrp = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+        hrp = hrp:WaitForChild("HumanoidRootPart")
+
+        local tracer = workspace.Map.TeleporterIsland.Main.TheHideout.Interactables["Anomaly Tracer"].Display.Parent
+
+        firetouchinterest(hrp, tracer, 0)
+        firetouchinterest(hrp, tracer, 1)
+
+    end
+})
+
+misc:Button({
+    Title = "Get Keycard 1",
+    Desc = "Touch Keycard 1",
+    Locked = false,
+    Callback = function()
+
+        local hrp = game.Players.LocalPlayer.Character or game.Players.LocalPlayer.CharacterAdded:Wait()
+        hrp = hrp:WaitForChild("HumanoidRootPart")
+
+        local key = workspace.Map.TeleporterIsland.Main.TheHideout.Interactables.Keycard1.Handle
+
+        firetouchinterest(hrp, key, 0)
+        firetouchinterest(hrp, key, 1)
+
+    end
+})
+
+
+--/: end :\--
+end
+
+
+--// In Game \\--
+if game.PlaceId == 6498579243 then
+--> Section InGame <--
+local secsInGame = {
+	["Tower"] = Tabs["Main"]:Tab({Title = "Tower",Opened = false, Icon = "solar:lightbulb-minimalistic-line-duotone", IconColor = Green, IconShape = "Square",}),
+	["Ability"] = Tabs["Main"]:Tab({Title = "Ability",Opened = false, Icon = "solar:lightbulb-bolt-broken", IconColor = Yellow, IconShape = "Square",}),
+	["Misc"] = Tabs["Main"]:Tab({Title = "Misc",Opened = false, Icon = "solar:folder-with-files-broken", IconColor = Red, IconShape = "Square",}),
+}
+--/> Tower <\--
+tower = secsInGame["Tower"]
+
+local Programmer = tower:Section({ 
+    Title = "ProgramAbility",
+    Box = true,
+    TextTransparency = 0.05,
+    TextXAlignment = "Center",
+    TextSize = 14,
+    Icon = Assets.Prog_Icon,
+    Opened = true,
+})
+
+Programmer:Slider({
+    Title = "Programmer Amount To Chain",
+    Step = 1,
+    Value = {
+        Min = 3,
+        Max = 4,
+        Default = 3,
+    },
+    Callback = function(value)
+        getgenv().Config["Programmer Ability Number"] = value
+    end
+})
+
+Programmer:Dropdown({
+    Title = "Time Programmer ability",
+    Values = { "30", "40" },
+    Value = "30",
+    Callback = function(value) 
+        getgenv().Config["TimeProg"] = value
+    end
+})
+
+Programmer:Slider({
+    Title = "interval Every Prog",
+    Step = 1,
+    Value = {
+        Min = 0.5,
+        Max = 3,
+        Default = 0.5,
+    },
+    Callback = function(value)
+        getgenv().Config["Programmer interval"] = value
+    end
+})
+
+Programmer:Dropdown({
+    Title = "Select Programmer For Chain",
+    Values = { "You Tower", "Other Tower" },
+    Value = "You Tower",
+    Callback = function(value)
+		if value == "You Tower" then
+    getgenv().Config["Owner Only"] = true
+elseif value == "Other Tower" then
+    getgenv().Config["Owner Only"] = false
+end
+    end
+})
+
+Programmer:Toggle({
+    Title = "Chain Programmer",
+    Desc = "Auto Chain Programmer Ability",
+    Type = "Toggle",
+    Default = false,
+    Callback = function(value) 
+        _G.AutoChainProg = value
+
+task.spawn(function()
+    local player = game.Players.LocalPlayer
+    local interval = 10 + (getgenv().Config["Programmer interval"] or 0)
+    local ownerOnly = getgenv().Config["Owner Only"] == true
+
+    while _G.AutoChainProg do
+        local towers = {}
+
+        for _,v in ipairs(workspace.Towers:GetChildren()) do
+            if v.Name=="Programmer" 
+                and v:FindFirstChild("Configuration") 
+                and v:FindFirstChild("Ability1Remote") 
+            then
+                if ownerOnly then
+                    if v.Configuration:FindFirstChild("Owner") 
+                        and v.Configuration.Owner.Value == player.Name 
+                    then
+                        table.insert(towers, v)
+                    end
+                else
+                    table.insert(towers, v)
+                end
+            end
+        end
+
+        if #towers == 0 then wait(1) continue end
+
+        for i = 1, #towers do
+            if not _G.AutoChainProg then break end
+            towers[i].Ability1Remote:FireServer()
+            wait(interval)
+        end
+    end
+end)
+
+    end
+})
+
+
+local PathTower = tower:Section({ 
+    Title = "Path Tower",
+    Box = true,
+    TextTransparency = 0.05,
+    TextXAlignment = "Center",
+    TextSize = 14,
+    Icon = Assets.Phantom_Icon,
+    Opened = true,
+})
+
+PathTower:Button({
+    Title = "No Cooldown For Path Tower",
+    Desc = "Yep this is work",
+    Locked = false,
+    Callback = function()
+        for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.UnitsListGui.ReplicatorClient.Storage:GetChildren()) do
+        if v:IsA("Frame") then
+        v:Destroy()
+        end
+        end
+        for i,v in pairs(game:GetService("Players").LocalPlayer.PlayerGui.UnitsListGui["ReplicatorClientNew & unused"].Storage:GetChildren()) do
+        if v:IsA("Frame") then
+        v:Destroy()
+        end
+        end
+    end
+})
+
+local Artisan = tower:Section({ 
+    Title = "Artisan",
+    Box = true,
+    TextTransparency = 0.05,
+    TextXAlignment = "Center",
+    TextSize = 14,
+    Icon = Assets.Artisan_Icon,
+    Opened = true,
+})
+
+TowerList = {}
+TowerMap = {}
+_G.TowerToTeleport = nil
+
+function GetTower()
+    table.clear(TowerList)
+    table.clear(TowerMap)
+    for _,v in pairs(workspace:WaitForChild("Towers"):GetChildren()) do
+        if v:FindFirstChild("Configuration") and v.Configuration:FindFirstChild("Owner") then
+            if v.Configuration.Owner.Value == game:GetService("Players").LocalPlayer.Name then
+                table.insert(TowerList,v.Name)
+                TowerMap[v.Name] = v
+            end
+        end
+    end
+    return TowerList
+end
+
+TowerDropdown = Artisan:Dropdown({
+    Title = "Select Tower To Teleport",
+    Desc = "Make Sure Ur Maxed Artisan or just only artisan",
+    Values = GetTower(),
+    Value = GetTower()[1],
+    Callback = function(option)
+        _G.TowerToTeleport = TowerMap[option]
+    end
+})
+
+function RefreshTower()
+    TowerDropdown:Refresh(GetTower())
+    if _G.TowerToTeleport and not _G.TowerToTeleport.Parent then
+        _G.TowerToTeleport = nil
+    end
+end
+
+workspace:WaitForChild("Towers").ChildAdded:Connect(function()
+    task.wait(0.2)
+    RefreshTower()
+end)
+
+workspace:WaitForChild("Towers").ChildRemoved:Connect(function()
+    RefreshTower()
+end)
+
+Artisan:Button({
+    Title = "Teleport Tower",
+    Desc = "Fr Need Artisan",
+    Locked = false,
+    Callback = function()
+        if not _G.TowerToTeleport then return end
+        if not workspace:WaitForChild("Towers"):FindFirstChild("Artisan") then return end
+        if not workspace.Towers.Artisan:FindFirstChild("Configuration") then return end
+        if not workspace.Towers.Artisan.Configuration:FindFirstChild("Owner") then return end
+        if workspace.Towers.Artisan.Configuration.Owner.Value ~= game:GetService("Players").LocalPlayer.Name then return end
+
+        if workspace.Towers.Artisan:FindFirstChild("CurrentHoveringSelectionRemote") then
+            workspace.Towers.Artisan.CurrentHoveringSelectionRemote:FireServer(_G.TowerToTeleport)
+        end
+    end
+})
+
+local Empty = tower:Section({ 
+    Title = "Place Anywhere",
+    Box = true,
+    TextTransparency = 0.05,
+    TextXAlignment = "Center",
+    TextSize = 14,
+    Icon = Assets.DumpsterFire_Icon,
+    Opened = true,
+})
+
+Empty:Paragraph({
+    Title = "Tutorial",
+    Desc = "1. Click Tower Have Ability Spawn Unit Like Technomancer \n 2. Click Ability Then Click EmptyTower \n Now Ur Done Place Anywhere",
+    Color = ,
+})
+
+Empty:Paragraph({
+    Title = "Warning",
+    Desc = "- It Doesn't Work On Artisan (So You need Place Dont Reach Other Tower Hitbox) and Make Sure Everything you Correct",
+    Color = "Red",
+})
+
+_G.Slot_Tower = 1
+
+getgenv().SaveOld = {
+	["1"] = game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower1.Value,
+	["2"] = game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower2.Value,
+	["3"] = game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower3.Value,
+	["4"] = game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower4.Value,
+	["5"] = game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower5.Value,
+	["6"] = game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower6.Value,
+}
+
+local Selected_VT = Empty:Dropdown({
+    Title = "Select Tower Slot To Replace With EmptyTower",
+    Values = { "1", "2", "3","4","5","6" },
+    Value = "1",
+    Callback = function(Value) 
+        _G.Slot_Tower = Value
+    end
+})
+
+EmptyTower:Toggle({
+    Title = "Click To Replace Tower",
+    Value = false,
+    Callback = function(Value) 
+        _G.YTP = Value
+        if _G.YTP == true then
+        game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower[_G.Slot_Tower].Value = "EmptyTower"
+        elseif _G.YTP == false then
+        game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower[_G.Slot_Tower].Value = getgenv().SaveOld[_G.Slot_Tower]
+    end
+})
+
+EmptyTower:Toggle({
+    Title = "Click To Replace Tower",
+    Value = false,
+    Callback = function(Value)
+        _G.YTP = Value
+
+        if not _G.Slot_Tower then return end
+        if not game:GetService("Players").LocalPlayer:FindFirstChild("PlayerData") then return end
+        if not game:GetService("Players").LocalPlayer.PlayerData:FindFirstChild("Loadout") then return end
+        if not game:GetService("Players").LocalPlayer.PlayerData.Loadout:FindFirstChild("Tower") then return end
+        if not game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower:FindFirstChild(_G.Slot_Tower) then return end
+
+        if _G.YTP == true then
+            if not getgenv().SaveOld then getgenv().SaveOld = {} end
+            if not getgenv().SaveOld[_G.Slot_Tower] then
+                getgenv().SaveOld[_G.Slot_Tower] =
+                    game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower[_G.Slot_Tower].Value
+            end
+            game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower[_G.Slot_Tower].Value = "EmptyTower"
+        else
+            if getgenv().SaveOld and getgenv().SaveOld[_G.Slot_Tower] then
+                game:GetService("Players").LocalPlayer.PlayerData.Loadout.Tower[_G.Slot_Tower].Value =
+                    getgenv().SaveOld[_G.Slot_Tower]
+            end
+        end
+    end
+})
+
+--// Misc \\--
+
+misc = secsInGame["Misc"]
+
+local Tower = misc:Toggle({
+    Title = "Change Replicated Tower to (new)",
+    Desc = "Change Tower Localscript To New Or Old",
+    Type = "Toggle",
+    Value = false,
+    Callback = function(value)
+
+        _G.Replicated = value
+
+        local gui = game.Players.LocalPlayer.PlayerGui.UnitsListGui
+        local newrep = gui["ReplicatorClientNew & unused"]
+        local oldrep = gui.ReplicatorClient
+
+        if _G.Replicated == true then
+            newrep.Disabled = true
+            oldrep.Disabled = false
+            Tower:SetTitle("Change Replicated Tower to (old)")
+        else
+            newrep.Disabled = false
+            oldrep.Disabled = true
+            Tower:SetTitle("Change Replicated Tower to (new)")
+        end
+    end
+})
+
+misc:Toggle({
+    Title = "Auto ArchmageStar",
+    Desc = "Nah Id Destroyer",
+    Type = "Toggle",
+    Value = false,
+    Callback = function(value)
+    _G.AutoStar = value
+    while _G.AutoStar and task.wait() do
+    local lp = game.Players.LocalPlayer
+local hrp = lp.Character and lp.Character:WaitForChild("HumanoidRootPart")
+
+for _, folder in ipairs(workspace.Map:GetChildren()) do
+    if folder.Name == "ArchmageStar" then
+        for _, obj in ipairs(folder:GetChildren()) do
+            if obj:IsA("ProximityPrompt") then
+                hrp.CFrame = obj.Parent.CFrame + Vector3.new(0,3,0)
+                fireproximityprompt(obj)
+            end
+        end
+    end
+end
+end
+    end
+})
+
+
+--/: end :\--
+end
