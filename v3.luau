@@ -717,6 +717,8 @@ Empty:Dropdown({
 
 EmptyTower:Toggle({
     Title = "Click To Replace Tower",
+    Desc = "chossen Tower First",
+    Type = "Toggle",
     Value = false,
     Callback = function(v)
         _G.YTP = v
