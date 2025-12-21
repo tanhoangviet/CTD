@@ -54,12 +54,11 @@ function LoadAssets(list, cfg)
     Prefix = cfg.prefix or ""
     Suffix = cfg.suffix or ""
     ForceExt = cfg.forceExt
-    RetryDelay = cfg.retryDelay or 0.12
-    PreloadBatch = cfg.preloadBatch or 8
-    Cache = cfg.cache ~= false
+    RetryDelay = cfg.retryDelay or 0.15
+    PreloadBatch = cfg.preloadBatch or 6
     Debug = cfg.debug ~= false
-    UserAgent = cfg.userAgent or "KoyukiHub"
     Notify = cfg.notify ~= false
+    UserAgent = cfg.userAgent or "KoyukiHub"
     NoMedia = cfg.nomedia ~= false
 
     if not isfolder(Root) then makefolder(Root) end
@@ -68,16 +67,18 @@ function LoadAssets(list, cfg)
         writefile(AssetsDir.."/.nomedia","")
     end
 
-    function Log(txt)
-        if Debug then warn("[Assets]",txt) end
+    function Log(t)
+        if Debug then warn("[Assets]",t) end
     end
 
-    function NotifyUI(txt)
+    function NotifyUI(t)
         if not Notify then return end
         if WindUI and WindUI.Notify then
-            WindUI:Notify({Title="Loading Assets",Content=txt,Duration=1})
-        else
-            print("[Assets]",txt)
+            WindUI:Notify({
+                Title = "Assets Loader",
+                Content = t,
+                Duration = 1
+            })
         end
     end
 
@@ -87,64 +88,62 @@ function LoadAssets(list, cfg)
         return (e and #e <= 6) and e or ".png"
     end
 
-    function Hash()
-        return HttpService:GenerateGUID(false):gsub("-",""):sub(1,16)
-    end
-
     function RequestBody(url)
         ok,res = pcall(function()
             return Request({
                 Url = url,
                 Method = "GET",
-                Headers = {["User-Agent"]=UserAgent}
+                Headers = {["User-Agent"] = UserAgent}
             })
         end)
-        return (ok and res and res.Body and #res.Body > 10) and res.Body or nil
+        return (ok and res and res.Body and #res.Body > 20) and res.Body or nil
     end
 
     Result = {}
-    PreloadQueue = {}
+    Queue = {}
 
     Total = 0
     for _ in pairs(list) do Total += 1 end
     Loaded = 0
 
-    NotifyUI("Starting... 0%")
+    NotifyUI("Starting 0%")
 
     for key,url in pairs(list) do
-        Name = Prefix..Hash()..Suffix..GetExt(url)
-        Path = AssetsDir.."/"..Name
+        Filename = Prefix..key..Suffix..GetExt(url)
+        Path = AssetsDir.."/"..Filename
 
-        if not (Cache and isfile(Path) and #readfile(Path) > 10) then
+        if not (isfile(Path) and #readfile(Path) > 20) then
             Log("Downloading "..key)
             repeat
                 Body = RequestBody(url)
-                if Body then writefile(Path,Body) end
-                if not Body then task.wait(RetryDelay) end
+                if Body then
+                    writefile(Path, Body)
+                else
+                    task.wait(RetryDelay)
+                end
             until Body
         else
-            Log("Cached "..key)
+            Log("Using cached "..key)
         end
 
         Asset = getcustomasset(Path)
         Result[key] = Asset
-        table.insert(PreloadQueue,Asset)
+        table.insert(Queue, Asset)
 
         Loaded += 1
         Percent = math.floor((Loaded / Total) * 100)
+        NotifyUI(key.." "..Percent.."%")
+        Log(key.." "..Percent.."%")
 
-        NotifyUI(key.." ("..Percent.."%)")
-        Log("Loaded "..key.." "..Percent.."%")
-
-        if #PreloadQueue >= PreloadBatch then
-            ContentProvider:PreloadAsync(PreloadQueue)
-            table.clear(PreloadQueue)
+        if #Queue >= PreloadBatch then
+            ContentProvider:PreloadAsync(Queue)
+            table.clear(Queue)
             task.wait()
         end
     end
 
-    if #PreloadQueue > 0 then
-        ContentProvider:PreloadAsync(PreloadQueue)
+    if #Queue > 0 then
+        ContentProvider:PreloadAsync(Queue)
     end
 
     NotifyUI("Completed 100%")
