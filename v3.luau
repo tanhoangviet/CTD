@@ -229,8 +229,8 @@ _G.Window = WindUI:CreateWindow({
 Window:EditOpenButton({
     Title = "Open Koyuki Hub",
     Icon = "rbxassetid://134430677550422",
-    CornerRadius = UDim.new(0,5),
-    StrokeThickness = 7,
+    CornerRadius = UDim.new(1,0),
+    StrokeThickness = 1,
     Color = ColorSequence.new(
         Color3.fromHex("FF00F0"), 
         Color3.fromHex("#FF00BD")
