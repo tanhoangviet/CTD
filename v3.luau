@@ -45,27 +45,40 @@ end
 function LoadAssets(list, cfg)
     ContentProvider = game:GetService("ContentProvider")
     HttpService = game:GetService("HttpService")
-
     Request = WindUI.Creator.Request
 
     cfg = cfg or {}
 
     Root = cfg.root or "Hub"
-    AssetsDir = cfg.assets or (Root .. "/Assets")
+    AssetsDir = cfg.assets or (Root.."/Assets")
     Prefix = cfg.prefix or ""
     Suffix = cfg.suffix or ""
     ForceExt = cfg.forceExt
     RetryDelay = cfg.retryDelay or 0.12
     PreloadBatch = cfg.preloadBatch or 8
-    MaxRetry = cfg.maxRetry or math.huge
-    UseCache = cfg.cache ~= false
+    Cache = cfg.cache ~= false
+    Debug = cfg.debug ~= false
     UserAgent = cfg.userAgent or "KoyukiHub"
-    AutoNoMedia = cfg.nomedia ~= false
+    Notify = cfg.notify ~= false
+    NoMedia = cfg.nomedia ~= false
 
     if not isfolder(Root) then makefolder(Root) end
     if not isfolder(AssetsDir) then makefolder(AssetsDir) end
-    if AutoNoMedia and not isfile(AssetsDir.."/.nomedia") then
+    if NoMedia and not isfile(AssetsDir.."/.nomedia") then
         writefile(AssetsDir.."/.nomedia","")
+    end
+
+    function Log(txt)
+        if Debug then warn("[Assets]",txt) end
+    end
+
+    function NotifyUI(txt)
+        if not Notify then return end
+        if WindUI and WindUI.Notify then
+            WindUI:Notify({Title="Loading Assets",Content=txt,Duration=1})
+        else
+            print("[Assets]",txt)
+        end
     end
 
     function GetExt(url)
@@ -74,7 +87,7 @@ function LoadAssets(list, cfg)
         return (e and #e <= 6) and e or ".png"
     end
 
-    function Hash(str)
+    function Hash()
         return HttpService:GenerateGUID(false):gsub("-",""):sub(1,16)
     end
 
@@ -83,9 +96,7 @@ function LoadAssets(list, cfg)
             return Request({
                 Url = url,
                 Method = "GET",
-                Headers = {
-                    ["User-Agent"] = UserAgent
-                }
+                Headers = {["User-Agent"]=UserAgent}
             })
         end)
         return (ok and res and res.Body and #res.Body > 10) and res.Body or nil
@@ -94,41 +105,50 @@ function LoadAssets(list, cfg)
     Result = {}
     PreloadQueue = {}
 
-    for key,url in pairs(list) do
-        Name = Prefix .. Hash(url) .. Suffix .. GetExt(url)
-        Path = AssetsDir .. "/" .. Name
+    Total = 0
+    for _ in pairs(list) do Total += 1 end
+    Loaded = 0
 
-        if not (UseCache and isfile(Path) and #readfile(Path) > 10) then
-            Retry = 0
+    NotifyUI("Starting... 0%")
+
+    for key,url in pairs(list) do
+        Name = Prefix..Hash()..Suffix..GetExt(url)
+        Path = AssetsDir.."/"..Name
+
+        if not (Cache and isfile(Path) and #readfile(Path) > 10) then
+            Log("Downloading "..key)
             repeat
                 Body = RequestBody(url)
-                if Body then
-                    writefile(Path,Body)
-                else
-                    Retry += 1
-                    task.wait(RetryDelay)
-                end
-            until (Body and isfile(Path)) or Retry >= MaxRetry
+                if Body then writefile(Path,Body) end
+                if not Body then task.wait(RetryDelay) end
+            until Body
+        else
+            Log("Cached "..key)
         end
 
-        if isfile(Path) then
-            Asset = getcustomasset(Path)
-            Result[key] = Asset
-            table.insert(PreloadQueue,Asset)
+        Asset = getcustomasset(Path)
+        Result[key] = Asset
+        table.insert(PreloadQueue,Asset)
 
-            if #PreloadQueue >= PreloadBatch then
-                ContentProvider:PreloadAsync(PreloadQueue)
-                table.clear(PreloadQueue)
-                task.wait()
-            end
-        else
-            Result[key] = nil
+        Loaded += 1
+        Percent = math.floor((Loaded / Total) * 100)
+
+        NotifyUI(key.." ("..Percent.."%)")
+        Log("Loaded "..key.." "..Percent.."%")
+
+        if #PreloadQueue >= PreloadBatch then
+            ContentProvider:PreloadAsync(PreloadQueue)
+            table.clear(PreloadQueue)
+            task.wait()
         end
     end
 
     if #PreloadQueue > 0 then
         ContentProvider:PreloadAsync(PreloadQueue)
     end
+
+    NotifyUI("Completed 100%")
+    Log("All assets loaded")
 
     return Result
 end
