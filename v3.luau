@@ -154,7 +154,7 @@ end
 --> Asset Download <--
 local Assets = LoadAssets({
     Background = "https://w0.peakpx.com/wallpaper/798/931/HD-wallpaper-how-does-recruitment-work-in-blue-archive-pro-game-guides.jpg",
-    Thumbnail_1 = "https://images.hdqwalls.com/wallpapers/arona-and-plana-blue-archive-19.jpg",
+    Thumbnail_1 = "https://i.ibb.co/RWKLjxx/takanashi-hoshino-thinking-in-class-blue-archive-thumb-1500x844.jpg",
     Icon_Image = "https://i.ibb.co/99sFfyn9/download-11.png",
     User_Inco = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSrodGnAjQt1cOYWVF5_68ybs_1iCTOPVch880cgzghmbr5ntgE4UDQdstX&s=10",
     Prog_Icon = "https://static.wikia.nocookie.net/critical-tower-defense/images/4/46/SystemOverdriveAbilityIcon.png/revision/latest?cb=20220321021234",
