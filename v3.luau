@@ -617,59 +617,58 @@ TowerList = {}
 TowerMap = {}
 _G.TowerToTeleport = nil
 
-function GetTower()
+function UpdateTower()
     table.clear(TowerList)
     table.clear(TowerMap)
-    for _,v in pairs(workspace:WaitForChild("Towers"):GetChildren()) do
-        if v:FindFirstChild("Configuration") and v.Configuration:FindFirstChild("Owner") then
-            if v.Configuration.Owner.Value == game:GetService("Players").LocalPlayer.Name then
-                table.insert(TowerList,v.Name)
-                TowerMap[v.Name] = v
-            end
+
+    for _,v in pairs(workspace.Towers:GetChildren()) do
+        local cfg = v:FindFirstChild("Configuration")
+        local owner = cfg and cfg:FindFirstChild("Owner")
+        if owner and owner.Value == game:GetService("Players").LocalPlayer.Name then
+            TowerList[#TowerList+1] = v.Name
+            TowerMap[v.Name] = v
         end
     end
-    return TowerList
-end
 
-TowerDropdown = Artisan:Dropdown({
-    Title = "Select Tower To Teleport",
-    Desc = "Make Sure Ur Maxed Artisan or just only artisan",
-    Values = GetTower(),
-    Value = GetTower()[1],
-    Callback = function(option)
-        _G.TowerToTeleport = TowerMap[option]
-    end
-})
+    TowerDropdown:Refresh(TowerList)
 
-function RefreshTower()
-    TowerDropdown:Refresh(GetTower())
     if _G.TowerToTeleport and not _G.TowerToTeleport.Parent then
         _G.TowerToTeleport = nil
     end
 end
 
-workspace:WaitForChild("Towers").ChildAdded:Connect(function()
-    task.wait(0.2)
-    RefreshTower()
+TowerDropdown = Artisan:Dropdown({
+    Title = "Select Tower To Teleport",
+    Desc = "Only Artisan / Maxed",
+    Values = {},
+    Callback = function(v)
+        _G.TowerToTeleport = TowerMap[v]
+    end
+})
+
+UpdateTower()
+
+workspace.Towers.ChildAdded:Connect(function()
+    task.wait(0.15)
+    UpdateTower()
 end)
 
-workspace:WaitForChild("Towers").ChildRemoved:Connect(function()
-    RefreshTower()
-end)
+workspace.Towers.ChildRemoved:Connect(UpdateTower)
 
 Artisan:Button({
     Title = "Teleport Tower",
-    Desc = "Fr Need Artisan",
+    Desc = "Artisan Required",
     Locked = false,
     Callback = function()
         if not _G.TowerToTeleport then return end
-        if not workspace:WaitForChild("Towers"):FindFirstChild("Artisan") then return end
-        if not workspace.Towers.Artisan:FindFirstChild("Configuration") then return end
-        if not workspace.Towers.Artisan.Configuration:FindFirstChild("Owner") then return end
-        if workspace.Towers.Artisan.Configuration.Owner.Value ~= game:GetService("Players").LocalPlayer.Name then return end
 
-        if workspace.Towers.Artisan:FindFirstChild("CurrentHoveringSelectionRemote") then
-            workspace.Towers.Artisan.CurrentHoveringSelectionRemote:FireServer(_G.TowerToTeleport)
+        local a = workspace.Towers:FindFirstChild("Artisan")
+        local cfg = a and a:FindFirstChild("Configuration")
+        local owner = cfg and cfg:FindFirstChild("Owner")
+        local remote = a and a:FindFirstChild("CurrentHoveringSelectionRemote")
+
+        if owner and owner.Value == game:GetService("Players").LocalPlayer.Name and remote then
+            remote:FireServer(_G.TowerToTeleport)
         end
     end
 })
