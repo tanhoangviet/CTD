@@ -685,7 +685,7 @@ for i = 1,6 do
     end
 end
 
-Empty:Dropdown({
+local EmptySelect = Empty:Dropdown({
     Title = "Select Tower Slot To Replace With EmptyTower",
     Values = {"1","2","3","4","5","6"},
     Value = "1",
@@ -716,9 +716,11 @@ Empty:Toggle({
                 getgenv().SaveOld[_G.Slot_Tower] = towerObj.Value
             end
             towerObj.Value = "EmptyTower"
+            EmptySelect:Lock()
         else
             if getgenv().SaveOld[_G.Slot_Tower] then
                 towerObj.Value = getgenv().SaveOld[_G.Slot_Tower]
+                EmptySelect:Unlock()
             end
         end
     end
@@ -728,20 +730,24 @@ Empty:Toggle({
 
 misc = secsInGame["Misc"]
 
-local Tower = misc:Toggle({
+local Tower
+Tower = misc:Toggle({
     Title = "Change Replicated Tower to (new)",
     Desc = "Change Tower Localscript To New Or Old",
     Type = "Toggle",
     Value = false,
     Callback = function(value)
-
         _G.Replicated = value
 
-        local gui = game.Players.LocalPlayer.PlayerGui.UnitsListGui
-        local newrep = gui["ReplicatorClientNew & unused"]
-        local oldrep = gui.ReplicatorClient
+        local plr = game:GetService("Players").LocalPlayer
+        local gui = plr:FindFirstChild("PlayerGui") and plr.PlayerGui:FindFirstChild("UnitsListGui")
+        if not gui then return end
 
-        if _G.Replicated == true then
+        local newrep = gui:FindFirstChild("ReplicatorClientNew & unused")
+        local oldrep = gui:FindFirstChild("ReplicatorClient")
+        if not (newrep and oldrep) then return end
+
+        if value then
             newrep.Disabled = true
             oldrep.Disabled = false
             Tower:SetTitle("Change Replicated Tower to (old)")
