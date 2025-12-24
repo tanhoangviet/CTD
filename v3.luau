@@ -42,113 +42,88 @@ end
 
 
 --> Function Download Image <--
-function LoadAssets(list, cfg)
-    ContentProvider = game:GetService("ContentProvider")
-    HttpService = game:GetService("HttpService")
-    Request = WindUI.Creator.Request
+function LoadAssets(list,cfg)
+    ContentProvider=game:GetService("ContentProvider")
+    HttpService=game:GetService("HttpService")
+    Request=WindUI and WindUI.Creator and WindUI.Creator.Request
 
-    cfg = cfg or {}
-
-    Root = cfg.root or "Hub"
-    AssetsDir = cfg.assets or (Root.."/Assets")
-    Prefix = cfg.prefix or ""
-    Suffix = cfg.suffix or ""
-    ForceExt = cfg.forceExt
-    RetryDelay = cfg.retryDelay or 0.15
-    PreloadBatch = cfg.preloadBatch or 6
-    Debug = cfg.debug ~= false
-    Notify = cfg.notify ~= false
-    UserAgent = cfg.userAgent or "KoyukiHub"
-    NoMedia = cfg.nomedia ~= false
+    cfg=cfg or {}
+    Root=cfg.root or "Hub"
+    AssetsDir=cfg.assets or Root.."/Assets"
+    Prefix=cfg.prefix or ""
+    Suffix=cfg.suffix or ""
+    ForceExt=cfg.forceExt
+    RetryDelay=cfg.retryDelay or 0.15
+    PreloadBatch=cfg.preloadBatch or 6
+    Notify=cfg.notify~=false
+    Debug=cfg.debug~=false
+    UserAgent=cfg.userAgent or "Hub"
+    NoMedia=cfg.nomedia~=false
 
     if not isfolder(Root) then makefolder(Root) end
     if not isfolder(AssetsDir) then makefolder(AssetsDir) end
-    if NoMedia and not isfile(AssetsDir.."/.nomedia") then
-        writefile(AssetsDir.."/.nomedia","")
-    end
+    if NoMedia and not isfile(AssetsDir.."/.nomedia") then writefile(AssetsDir.."/.nomedia","") end
 
-    function Log(t)
-        if Debug then warn("[Assets]",t) end
-    end
-
-    function NotifyUI(t)
+    function Log(t) if Debug then warn("[Assets]",t) end end
+    function UI(t)
         if not Notify then return end
         if WindUI and WindUI.Notify then
-            WindUI:Notify({
-                Title = "Assets Loader",
-                Content = t,
-                Duration = 1
-            })
+            WindUI:Notify({Title="Assets",Content=t,Duration=0.8})
         end
     end
 
-    function GetExt(url)
+    function Ext(u)
         if ForceExt then return ForceExt end
-        e = url:match("^.+(%.[%w%d]+)$")
-        return (e and #e <= 6) and e or ".png"
+        e=u:match("^.+(%.[%w%d]+)$")
+        return(e and #e<=6)and e or".png"
     end
 
-    function RequestBody(url)
-        ok,res = pcall(function()
-            return Request({
-                Url = url,
-                Method = "GET",
-                Headers = {["User-Agent"] = UserAgent}
-            })
+    function Body(u)
+        if not Request then return game:HttpGet(u) end
+        ok,res=pcall(function()
+            return Request({Url=u,Method="GET",Headers={["User-Agent"]=UserAgent}})
         end)
-        return (ok and res and res.Body and #res.Body > 20) and res.Body or nil
+        return(ok and res and res.Body and #res.Body>20)and res.Body or nil
     end
 
-    Result = {}
-    Queue = {}
+    HighUNC = queue_on_teleport and getcustomasset and ContentProvider.PreloadAsync
+    Batch = HighUNC and PreloadBatch or 1
 
-    Total = 0
-    for _ in pairs(list) do Total += 1 end
-    Loaded = 0
+    Result={}
+    Queue={}
+    Total=0
+    for _ in pairs(list) do Total+=1 end
+    Loaded=0
 
-    NotifyUI("Starting 0%")
+    for k,u in pairs(list) do
+        Name=Prefix..k..Suffix..Ext(u)
+        Path=AssetsDir.."/"..Name
+        Cached=isfile(Path) and #readfile(Path)>20
 
-    for key,url in pairs(list) do
-        Filename = Prefix..key..Suffix..GetExt(url)
-        Path = AssetsDir.."/"..Filename
-
-        if not (isfile(Path) and #readfile(Path) > 20) then
-            Log("Downloading "..key)
+        if not Cached then
             repeat
-                Body = RequestBody(url)
-                if Body then
-                    writefile(Path, Body)
-                else
-                    task.wait(RetryDelay)
-                end
-            until Body
-        else
-            Log("Using cached "..key)
+                B=Body(u)
+                if B then writefile(Path,B) else task.wait(RetryDelay) end
+            until B
+            UI("Loaded "..k)
         end
 
-        Asset = getcustomasset(Path)
-        Result[key] = Asset
-        table.insert(Queue, Asset)
+        A=getcustomasset(Path)
+        Result[k]=A
+        Queue[#Queue+1]=A
 
-        Loaded += 1
-        Percent = math.floor((Loaded / Total) * 100)
-        NotifyUI(key.." "..Percent.."%")
-        Log(key.." "..Percent.."%")
+        Loaded+=1
+        if not Cached then Log(k.." "..math.floor(Loaded/Total*100).."%") end
 
-        if #Queue >= PreloadBatch then
-            ContentProvider:PreloadAsync(Queue)
+        if #Queue>=Batch then
+            pcall(function() ContentProvider:PreloadAsync(Queue) end)
             table.clear(Queue)
             task.wait()
         end
     end
 
-    if #Queue > 0 then
-        ContentProvider:PreloadAsync(Queue)
-    end
-
-    NotifyUI("Completed 100%")
-    Log("All assets loaded")
-
+    if #Queue>0 then pcall(function() ContentProvider:PreloadAsync(Queue) end) end
+    UI("Completed")
     return Result
 end
 --> Asset Download <--
