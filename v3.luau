@@ -591,10 +591,12 @@ local Artisan = tower:Section({
 TowerList = {}
 TowerMap = {}
 _G.TowerToTeleport = nil
+MyArtisan = nil
 
 function UpdateTower()
     table.clear(TowerList)
     table.clear(TowerMap)
+    MyArtisan = nil
 
     for _,v in pairs(workspace.Towers:GetChildren()) do
         local cfg = v:FindFirstChild("Configuration")
@@ -602,6 +604,9 @@ function UpdateTower()
         if owner and owner.Value == game:GetService("Players").LocalPlayer.Name then
             TowerList[#TowerList+1] = v.Name
             TowerMap[v.Name] = v
+            if v.Name == "Artisan" then
+                MyArtisan = v
+            end
         end
     end
 
@@ -614,7 +619,7 @@ end
 
 TowerDropdown = Artisan:Dropdown({
     Title = "Select Tower To Teleport",
-    Desc = "Only Artisan / Maxed",
+    Desc = "Owned Towers Only",
     Values = {},
     Callback = function(v)
         _G.TowerToTeleport = TowerMap[v]
@@ -632,15 +637,15 @@ workspace.Towers.ChildRemoved:Connect(UpdateTower)
 
 Artisan:Button({
     Title = "Teleport Tower",
-    Desc = "Artisan Required",
+    Desc = "Require Your Artisan",
     Locked = false,
     Callback = function()
         if not _G.TowerToTeleport then return end
+        if not MyArtisan then return end
 
-        local a = workspace.Towers:FindFirstChild("Artisan")
-        local cfg = a and a:FindFirstChild("Configuration")
+        local cfg = MyArtisan:FindFirstChild("Configuration")
         local owner = cfg and cfg:FindFirstChild("Owner")
-        local remote = a and a:FindFirstChild("CurrentHoveringSelectionRemote")
+        local remote = MyArtisan:FindFirstChild("CurrentHoveringSelectionRemote")
 
         if owner and owner.Value == game:GetService("Players").LocalPlayer.Name and remote then
             remote:FireServer(_G.TowerToTeleport)
