@@ -1,6 +1,6 @@
 --> Loader <--
 local LoaderScript = {
-	["WindUI"] = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/refs/heads/main/dist/main.lua"))(),
+	["WindUI"] = loadstring(game:HttpGet("https://github.com/Footagesus/WindUI/releases/download/1.6.63/main.lua"))(),
 	["ANUI"] = loadstring(game:HttpGet("https://raw.githubusercontent.com/ANHub-Script/ANUI/refs/heads/main/dist/main.lua?v="..math.random()))()
 }
 
