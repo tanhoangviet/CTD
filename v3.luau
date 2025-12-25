@@ -589,14 +589,15 @@ local Artisan = tower:Section({
 })
 
 
-local plr = game:GetService("Players").LocalPlayer
 local UI = {}
-
-UI.Gui = Instance.new("ScreenGui", game.CoreGui)
+UI.Gui = Instance.new("ScreenGui")
 UI.Gui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+UI.Gui.Parent = game.CoreGui
 UI.Gui.Enabled = false
 
-UI.Main = Instance.new("Frame", UI.Gui)
+UI.Main = Instance.new("Frame")
+UI.Main.Name = "MainFrame"
+UI.Main.Parent = UI.Gui
 UI.Main.BorderSizePixel = 0
 UI.Main.BackgroundColor3 = Color3.fromRGB(255,255,255)
 UI.Main.Size = UDim2.new(0.22399,0,0.34471,0)
@@ -604,34 +605,40 @@ UI.Main.Position = UDim2.new(0.035,0,0.03283,0)
 
 Instance.new("UICorner", UI.Main)
 
-local g = Instance.new("UIGradient", UI.Main)
-g.Rotation = 45
-g.Color = ColorSequence.new{
+UI.Gradient = Instance.new("UIGradient")
+UI.Gradient.Parent = UI.Main
+UI.Gradient.Rotation = 45
+UI.Gradient.Color = ColorSequence.new{
     ColorSequenceKeypoint.new(0, Color3.fromRGB(122,150,173)),
     ColorSequenceKeypoint.new(0.748, Color3.fromRGB(160,196,226)),
     ColorSequenceKeypoint.new(1, Color3.fromRGB(160,196,226))
 }
 
-UI.Canvas = Instance.new("CanvasGroup", UI.Main)
+UI.Canvas = Instance.new("CanvasGroup")
+UI.Canvas.Name = "Canvas"
+UI.Canvas.Parent = UI.Main
 UI.Canvas.BackgroundTransparency = 1
 UI.Canvas.Size = UDim2.new(1,0,0.8254,0)
 UI.Canvas.Position = UDim2.new(0,0,0.07937,0)
 
-local line = Instance.new("Frame", UI.Canvas)
-line.BorderSizePixel = 0
-line.BackgroundColor3 = Color3.fromRGB(255,255,255)
-line.BackgroundTransparency = 0.8
-line.Size = UDim2.new(1.16667,0,0.01923,0)
-line.Position = UDim2.new(-0.07292,0,0.07692,0)
+UI.Line = Instance.new("Frame")
+UI.Line.Parent = UI.Canvas
+UI.Line.BorderSizePixel = 0
+UI.Line.BackgroundColor3 = Color3.fromRGB(255,255,255)
+UI.Line.BackgroundTransparency = 0.8
+UI.Line.Size = UDim2.new(1.16667,0,0.01923,0)
+UI.Line.Position = UDim2.new(-0.07292,0,0.07692,0)
 
 for _,t in ipairs({2,4}) do
-    local s = Instance.new("UIStroke", line)
+    local s = Instance.new("UIStroke", UI.Line)
     s.Transparency = 0.9
     s.Thickness = t
 end
 
-UI.Label = Instance.new("TextLabel", UI.Main)
-UI.Label.Text = "No Tower Selected"
+UI.Label = Instance.new("TextLabel")
+UI.Label.Name = "TowerName"
+UI.Label.Parent = UI.Main
+UI.Label.Text = ""
 UI.Label.TextSize = 18
 UI.Label.TextColor3 = Color3.fromRGB(255,255,255)
 UI.Label.BackgroundColor3 = Color3.fromRGB(0,0,0)
@@ -646,7 +653,9 @@ for _,t in ipairs({2,4}) do
     s.Thickness = t
 end
 
-UI.Button = Instance.new("TextButton", UI.Main)
+UI.Button = Instance.new("TextButton")
+UI.Button.Name = "TeleportButton"
+UI.Button.Parent = UI.Main
 UI.Button.Text = "Teleport Tower"
 UI.Button.TextSize = 12
 UI.Button.TextColor3 = Color3.fromRGB(255,255,255)
@@ -663,22 +672,25 @@ for _,t in ipairs({2,4}) do
 end
 
 Instance.new("UIDragDetector", UI.Main)
-Instance.new("UIAspectRatioConstraint", UI.Main).AspectRatio = 1.52381
 
-local TowerList = {}
-local TowerMap = {}
-local SelectedTower
-local MyArtisan
+UI.Ratio = Instance.new("UIAspectRatioConstraint")
+UI.Ratio.Parent = UI.Main
+UI.Ratio.AspectRatio = 1.52381
 
-local function UpdateTower()
+TowerList = {}
+TowerMap = {}
+_G.TowerToTeleport = nil
+MyArtisan = nil
+
+function UpdateTower()
     table.clear(TowerList)
     table.clear(TowerMap)
     MyArtisan = nil
 
-    for _,v in ipairs(workspace.Towers:GetChildren()) do
+    for _,v in pairs(workspace.Towers:GetChildren()) do
         local cfg = v:FindFirstChild("Configuration")
         local owner = cfg and cfg:FindFirstChild("Owner")
-        if owner and owner.Value == plr.Name then
+        if owner and owner.Value == game:GetService("Players").LocalPlayer.Name then
             TowerList[#TowerList+1] = v.Name
             TowerMap[v.Name] = v
             if v.Name == "Artisan" then
@@ -689,19 +701,17 @@ local function UpdateTower()
 
     TowerDropdown:Refresh(TowerList)
 
-    if SelectedTower and not SelectedTower.Parent then
-        SelectedTower = nil
-        UI.Label.Text = "No Tower Selected"
+    if _G.TowerToTeleport and not _G.TowerToTeleport.Parent then
+        _G.TowerToTeleport = nil
     end
 end
 
 TowerDropdown = Artisan:Dropdown({
     Title = "Select Tower To Teleport",
-    Desc = "Owned Towers",
+    Desc = "Owned Towers Only",
     Values = {},
     Callback = function(v)
-        SelectedTower = TowerMap[v]
-        UI.Label.Text = v or "No Tower Selected"
+        _G.TowerToTeleport = TowerMap[v]
     end
 })
 
@@ -713,23 +723,39 @@ workspace.Towers.ChildAdded:Connect(function()
 end)
 
 workspace.Towers.ChildRemoved:Connect(UpdateTower)
+Artisan:Button({  
+    Title = "Teleport Tower",  
+    Desc = "Require Your Artisan",  
+    Locked = false,  
+    Callback = function()  
+        if not _G.TowerToTeleport then return end  
+        if not MyArtisan then return end  
+  
+        local cfg = MyArtisan:FindFirstChild("Configuration")  
+        local owner = cfg and cfg:FindFirstChild("Owner")  
+        local remote = MyArtisan:FindFirstChild("CurrentHoveringSelectionRemote")  
+  
+        if owner and owner.Value == game:GetService("Players").LocalPlayer.Name and remote then  
+            remote:FireServer(_G.TowerToTeleport)  
+        end  
+    end  
+})
 
-UI.Button.MouseButton1Click:Connect(function()
-    if not SelectedTower or not MyArtisan then return end
-    local cfg = MyArtisan:FindFirstChild("Configuration")
-    local owner = cfg and cfg:FindFirstChild("Owner")
-    local remote = MyArtisan:FindFirstChild("CurrentHoveringSelectionRemote")
-    if owner and owner.Value == plr.Name and remote then
-        remote:FireServer(SelectedTower)
-    end
-end)
+Artisan:Button({
+    Title = "Teleport Tower",
+    Desc = "Require Your Artisan",
+    Locked = false,
+    Callback = function()
+        if not _G.TowerToTeleport then return end
+        if not MyArtisan then return end
 
-Artisan:Toggle({
-    Title = "Toggle Tower Teleport UI",
-    Desc = "Show / Hide UI",
-    Value = false,
-    Callback = function(v)
-        UI.Gui.Enabled = v
+        local cfg = MyArtisan:FindFirstChild("Configuration")
+        local owner = cfg and cfg:FindFirstChild("Owner")
+        local remote = MyArtisan:FindFirstChild("CurrentHoveringSelectionRemote")
+
+        if owner and owner.Value == game:GetService("Players").LocalPlayer.Name and remote then
+            remote:FireServer(_G.TowerToTeleport)
+        end
     end
 })
 
