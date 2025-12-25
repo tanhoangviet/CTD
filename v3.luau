@@ -723,6 +723,7 @@ workspace.Towers.ChildAdded:Connect(function()
 end)
 
 workspace.Towers.ChildRemoved:Connect(UpdateTower)
+
 Artisan:Button({  
     Title = "Teleport Tower",  
     Desc = "Require Your Artisan",  
