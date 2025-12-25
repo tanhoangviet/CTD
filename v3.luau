@@ -1,13 +1,13 @@
 --> Loader <--
 local LoaderScript = {
-	["WindUI"] = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))(),
+	["WindUI"] = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/refs/heads/main/dist/main.lua"))(),
 	["ANUI"] = loadstring(game:HttpGet("https://raw.githubusercontent.com/ANHub-Script/ANUI/refs/heads/main/dist/main.lua?v="..math.random()))()
 }
 
 --> Settings Library <--
 
 local WindUI = LoaderScript["WindUI"]
-
+WindUI:SetParent(game:GetService("CoreGui"))
 
 --> Theme <--
 WindUI:AddTheme({Name="Mid Summer",Accent=WindUI:Gradient({["0"]={Color=Color3.fromHex("#FFD194"),Transparency=0},["50"]={Color=Color3.fromHex("#FF7E5F"),Transparency=0},["100"]={Color=Color3.fromHex("#FF5F6D"),Transparency=0}},{Rotation=45}),Dialog=WindUI:Gradient({["0"]={Color=Color3.fromHex("#FFF3E0"),Transparency=0},["50"]={Color=Color3.fromHex("#FFE0B2"),Transparency=0},["100"]={Color=Color3.fromHex("#FFD194"),Transparency=0}},{Rotation=45}),Outline=WindUI:Gradient({["0"]={Color=Color3.fromHex("#FF8C42"),Transparency=0},["50"]={Color=Color3.fromHex("#FF7E5F"),Transparency=0},["100"]={Color=Color3.fromHex("#FF6A88"),Transparency=0}},{Rotation=45}),Text=WindUI:Gradient({["0"]={Color=Color3.fromHex("#6B4226"),Transparency=0},["50"]={Color=Color3.fromHex("#8B4513"),Transparency=0},["100"]={Color=Color3.fromHex("#A0522D"),Transparency=0}},{Rotation=45}),Placeholder=WindUI:Gradient({["0"]={Color=Color3.fromHex("#D9B08C"),Transparency=0},["50"]={Color=Color3.fromHex("#C68642"),Transparency=0},["100"]={Color=Color3.fromHex("#B5651D"),Transparency=0}},{Rotation=45}),Background=WindUI:Gradient({["0"]={Color=Color3.fromHex("#FFE5B4"),Transparency=0},["50"]={Color=Color3.fromHex("#FFC87C"),Transparency=0},["100"]={Color=Color3.fromHex("#FFAA5C"),Transparency=0}},{Rotation=45}),Button=WindUI:Gradient({["0"]={Color=Color3.fromHex("#FFAA5C"),Transparency=0},["50"]={Color=Color3.fromHex("#FF7E5F"),Transparency=0},["100"]={Color=Color3.fromHex("#FF5F6D"),Transparency=0}},{Rotation=45}),Icon=WindUI:Gradient({["0"]={Color=Color3.fromHex("#FF7F50"),Transparency=0},["50"]={Color=Color3.fromHex("#FF6A88"),Transparency=0},["100"]={Color=Color3.fromHex("#FF5F6D"),Transparency=0}},{Rotation=45})})
