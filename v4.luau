@@ -571,3 +571,36 @@ end
 })
 
 end
+
+
+
+
+
+
+--[[ ingore ts ]]--
+ScriptURL = "https://raw.githubusercontent.com/tanhoangviet/CTD/refs/heads/main/v4.luau"
+FlagName = "_AUTO_RERUN_CTDSCRIPT"
+
+if not getgenv()[FlagName] then
+    getgenv()[FlagName] = true
+
+    function Run()
+        repeat task.wait() until game:IsLoaded()
+        loadstring(game:HttpGet(ScriptURL))()
+    end
+
+    if queue_on_teleport then
+        queue_on_teleport([[
+            getgenv().]]..FlagName..[[ = nil
+            repeat task.wait() until game:IsLoaded()
+            loadstring(game:HttpGet("]]..ScriptURL..[["))()
+        ]])
+    end
+
+    if game:IsLoaded() then
+        Run()
+    else
+        game.Loaded:Wait()
+        Run()
+    end
+end
