@@ -4,8 +4,6 @@ local ib,r_,Cb,O,Mc,ke=getmetatable,type,bit32.bxor,pairs local k,Hb,e_,oa,Md,Gd
 if getgenv()._CTD then return end
 getgenv()._CTD = true
 
-_G.AutoExecute = getgenv().AutoExecute
-
 local URL = "https://raw.githubusercontent.com/tanhoangviet/CTD/refs/heads/main/v4(premade).luau"
 
 if queue_on_teleport then
@@ -13,7 +11,4 @@ if queue_on_teleport then
 end
 
 repeat task.wait() until game:IsLoaded()
-
-if _G.AutoExecute then
-    loadstring(game:HttpGet(URL))()
-end
+loadstring(game:HttpGet(URL))()
